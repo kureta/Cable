@@ -12,10 +12,18 @@ The base classes provide:
 - Layout calculations
 - Basic selection and highlighting
 
+The module is completely decoupled from any specific domain (audio, JACK, etc.)
+and can be used for:
+- Mathematical operations
+- Data flow diagrams
+- Visual programming
+- Audio/MIDI routing (as one specific use case)
+- Any node-graph application
+
 Applications can extend these base classes to add specific features like:
 - Custom context menus
 - Application-specific port types
-- Integration with specific audio/MIDI frameworks
+- Domain-specific computations
 - State persistence
 """
 
@@ -34,6 +42,7 @@ from . import constants
 if TYPE_CHECKING:
     from .port_item import PortItem
     from .bulk_area_item import BulkAreaItem
+    from .generic_node import GenericNode
 
 
 class BaseNodeUI(QGraphicsItem):
@@ -56,7 +65,7 @@ class BaseNodeUI(QGraphicsItem):
     - Custom interactions
     """
     
-    def __init__(self, title: str, width: float = None, title_height: float = None):
+    def __init__(self, title: str, width: float = None, title_height: float = None, node_model: Optional[GenericNode] = None):
         """
         Initialize the base node UI.
         
@@ -64,6 +73,7 @@ class BaseNodeUI(QGraphicsItem):
             title: Display title for the node
             width: Node width (default from constants.NODE_WIDTH)
             title_height: Title bar height (default from constants.NODE_TITLE_HEIGHT)
+            node_model: Optional GenericNode for data model separation
         """
         super().__init__()
         
@@ -82,6 +92,9 @@ class BaseNodeUI(QGraphicsItem):
         
         # Visual state flags
         self.is_folded = False
+        
+        # Optional data model (for Model-View separation)
+        self.node_model = node_model
         
         # Configure item flags
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
