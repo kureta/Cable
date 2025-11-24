@@ -22,7 +22,7 @@ from PyQt6.QtWidgets import (
     QGraphicsItem, QGraphicsTextItem, QGraphicsEllipseItem,
     QGraphicsLineItem, QVBoxLayout, QHBoxLayout, QWidget,
     QPushButton, QLabel, QLineEdit, QDialog, QDialogButtonBox,
-    QDoubleSpinBox, QFormLayout
+    QDoubleSpinBox, QFormLayout, QStyle
 )
 from PyQt6.QtGui import (
     QPainter, QPen, QBrush, QColor, QPainterPath, QFont,
@@ -205,7 +205,7 @@ class VisualNode(QGraphicsItem):
     
     def paint(self, painter: QPainter, option, widget=None):
         # Determine if selected
-        is_selected = bool(option.state & QGraphicsItem.GraphicsItemFlag.ItemIsSelected)
+        is_selected = bool(option.state & QStyle.StateFlag.State_Selected)
         
         # Draw node body
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
